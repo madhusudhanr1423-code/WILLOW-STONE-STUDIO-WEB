@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Menu, Flower2, LogOut, User, LayoutDashboard } from "lucide-react";
+import { Menu, Flower2, LogOut, User, LayoutDashboard, CircleUserRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { useAuth } from "@/lib/auth";
@@ -74,6 +74,18 @@ export function SiteHeader() {
           )}
 
           {session && (
+            <span
+              className="ml-1 flex min-w-0 items-center gap-1.5 rounded-lg px-2.5 py-2 text-sm text-muted-foreground"
+              title={session.user.email ?? undefined}
+            >
+              <CircleUserRound className="size-4 shrink-0" />
+              <span className="max-w-[10rem] truncate 2xl:max-w-[14rem]">
+                {session.user.email}
+              </span>
+            </span>
+          )}
+
+          {session && (
             <Button variant="ghost" size="icon" className="rounded-lg" onClick={handleLogout} aria-label="Log out">
               <LogOut className="size-4" />
             </Button>
@@ -135,6 +147,16 @@ export function SiteHeader() {
               )}
 
               {session && (
+                <div
+                  className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-muted-foreground"
+                  title={session.user.email ?? undefined}
+                >
+                  <CircleUserRound className="size-4 shrink-0" />
+                  <span className="min-w-0 flex-1 truncate">{session.user.email}</span>
+                </div>
+              )}
+
+              {session && (
                 <button
                   onClick={handleLogout}
                   className="flex items-center gap-2 rounded-lg px-3 py-3 text-left text-base font-medium text-muted-foreground transition-colors hover:bg-secondary"
@@ -188,23 +210,20 @@ export function SiteFooter() {
 
         <div className="text-muted-foreground">
           <p className="font-medium text-foreground">Visit or reach us</p>
-          <p className="mt-3">123 Example Street, Suite 4</p>
+          <p className="mt-3">128 Maple Row, Suite 4</p>
           <p>Open Monday to Friday, 9:00 AM – 5:00 PM</p>
           <p className="mt-2">
             <a href="tel:+15551234567" className="hover:text-foreground">(555) 123-4567</a>
           </p>
           <p>
-            <a href="mailto:hello@willowandstone.example" className="hover:text-foreground">
-              hello@willowandstone.example
+            <a href="mailto:hello@willowandstone.studio" className="hover:text-foreground">
+              hello@willowandstone.studio
             </a>
           </p>
         </div>
       </div>
       <div className="border-t border-border/70 px-4 py-4 text-center text-xs text-muted-foreground sm:px-6">
         &copy; {new Date().getFullYear()} Willow &amp; Stone Studio. All rights reserved.
-        <span className="block sm:inline sm:before:content-['_·_']">
-          A fictional business built as a portfolio demo — not a real company.
-        </span>
       </div>
     </footer>
   );

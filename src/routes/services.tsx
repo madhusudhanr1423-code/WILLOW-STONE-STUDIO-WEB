@@ -43,12 +43,13 @@ function ServicesPage() {
 
   return (
     <div>
-      <section className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 sm:py-16">
+      <section className="relative overflow-hidden mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-secondary/20 via-background to-background" />
         <div className="max-w-2xl">
           <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1 text-xs font-semibold tracking-wide text-secondary-foreground uppercase">
             Services
           </span>
-          <h1 className="mt-5 text-4xl leading-tight font-semibold text-balance sm:text-5xl">
+          <h1 className="mt-5 text-4xl font-semibold tracking-tight leading-[1.05] text-balance sm:text-5xl lg:text-6xl">
             Three ways to work together
           </h1>
           <p className="mt-4 text-base text-muted-foreground sm:text-lg">
@@ -61,27 +62,31 @@ function ServicesPage() {
 
       <section className="border-y border-border/70 bg-secondary/40">
         <div className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-          {isLoading && <p className="text-muted-foreground">Loading services…</p>}
+       {!isLoading && services?.length === 0 && (
+  <p className="text-center text-muted-foreground">
+    Services will be available soon.
+  </p>
+)}
           <div className="grid gap-6 lg:grid-cols-3">
             {services?.map((service) => {
               const Icon = iconByService[service.name];
               return (
                 <Card
                   key={service.id}
-                  className="flex flex-col rounded-2xl border-border/70 shadow-[var(--shadow-soft)] hover-lift"
+                  className="group flex flex-col rounded-3xl border-border/70 bg-gradient-to-br from-background to-secondary/30 shadow-[var(--shadow-soft)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[var(--shadow-lift)]"
                 >
                   <CardContent className="flex flex-1 flex-col p-6">
                     <div className="flex items-start justify-between gap-3">
-                      <span className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary">
-                        <Icon className="size-5" />
+                      <span className="grid size-12 place-items-center rounded-xl bg-primary/10 text-primary transition-transform duration-500 group-hover:rotate-6">
+                        <Icon className="size-5 transition-transform duration-500 group-hover:scale-110" />
                       </span>
-                      <Badge variant="secondary" className="rounded-full">
+                      <Badge variant="secondary" className="rounded-full border border-border/60 px-3 py-1">
                         {service.tagline}
                       </Badge>
                     </div>
                     <h3 className="mt-4 text-xl font-semibold">{service.name}</h3>
                     <div className="mt-1 flex items-baseline gap-2">
-                      <span className="text-2xl font-semibold">
+                      <span className="text-2xl font-semibold tracking-tight">
                         {formatPrice(service.price_cents)}
                       </span>
                       <span className="text-sm text-muted-foreground">
@@ -90,6 +95,11 @@ function ServicesPage() {
                     </div>
                     <p className="mt-3 flex-1 text-sm leading-relaxed text-muted-foreground">
                       {service.description}
+                      <div className="mt-5 space-y-2 text-sm text-muted-foreground">
+                        <div>✓ Personal consultation</div>
+                        <div>✓ Tailored treatment plan</div>
+                        <div>✓ Professional after-care advice</div>
+                      </div>
                     </p>
                     <Button asChild className="mt-6 w-full rounded-xl">
                       <Link to="/book">
@@ -104,14 +114,17 @@ function ServicesPage() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-6xl px-4 py-14 text-center sm:px-6 sm:py-20">
-        <h2 className="text-2xl font-semibold sm:text-3xl">Not sure which one you need?</h2>
+      
+      <div className="mx-auto h-px max-w-6xl bg-border/50" />
+
+      <section className="mx-auto w-full max-w-4xl rounded-3xl bg-secondary/20 px-4 py-20 text-center sm:px-8 lg:py-24">
+        <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Not sure which one you need?</h2>
         <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
           Start with a consultation — your practitioner will recommend a follow-up schedule based
           on what comes up during your first session.
         </p>
         <Button asChild size="lg" className="mt-6 w-full rounded-xl sm:w-auto">
-          <Link to="/book">Book a consultation</Link>
+          <Link to="/book">Reserve Session</Link>
         </Button>
       </section>
     </div>

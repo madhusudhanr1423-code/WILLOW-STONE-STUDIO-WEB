@@ -46,8 +46,9 @@ const details = [
 function ContactPage() {
   return (
     <div>
-      <section className="mx-auto w-full max-w-6xl px-4 pt-6 sm:px-6">
-        <div className="rounded-xl border border-border/70 bg-secondary/40 px-4 py-3 text-sm text-muted-foreground">
+      <section className="relative overflow-hidden mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-secondary/20 via-background to-background" />
+        <div className="rounded-2xl border border-border/70 bg-secondary/30 px-5 py-4 text-sm text-muted-foreground shadow-[var(--shadow-soft)]">
           <strong className="text-foreground">Portfolio demo:</strong> Willow &amp; Stone Studio
           is a fictional business built to showcase this booking app. The contact details below
           are placeholders, not a real studio.
@@ -59,7 +60,7 @@ function ContactPage() {
           <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1 text-xs font-semibold tracking-wide text-secondary-foreground uppercase">
             Get in touch
           </span>
-          <h1 className="mt-5 text-4xl leading-tight font-semibold text-balance sm:text-5xl">
+          <h1 className="mt-5 text-4xl font-semibold tracking-tight leading-[1.05] text-balance sm:text-5xl lg:text-6xl">
             We'd love to hear from you
           </h1>
           <p className="mt-4 text-base text-muted-foreground sm:text-lg">
@@ -74,10 +75,10 @@ function ContactPage() {
         <div className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
           <div className="grid gap-6 sm:grid-cols-2">
             {details.map((d) => (
-              <Card key={d.label} className="rounded-2xl border-border/70 shadow-[var(--shadow-soft)] hover-lift">
-                <CardContent className="flex items-start gap-4 p-6">
-                  <span className="grid size-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
-                    <d.icon className="size-5" />
+              <Card key={d.label} className="group rounded-3xl border-border/70 bg-gradient-to-br from-background to-secondary/30 shadow-[var(--shadow-soft)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[var(--shadow-lift)]">
+                <CardContent className="flex items-start gap-4 p-8">
+                  <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary transition-transform duration-500 group-hover:rotate-6">
+                    <d.icon className="size-5 transition-transform duration-500 group-hover:scale-110" />
                   </span>
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">{d.label}</p>
@@ -96,8 +97,10 @@ function ContactPage() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-6xl px-4 py-14 text-center sm:px-6 sm:py-20">
-        <h2 className="text-2xl font-semibold sm:text-3xl">Ready to book?</h2>
+      <div className="mx-auto h-px max-w-6xl bg-border/50" />
+
+      <section className="mx-auto w-full max-w-4xl px-4 py-20 text-center sm:px-6 lg:py-24">
+        <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Reserve Your Session</h2>
         <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
           Skip the back-and-forth — pick a service and a time slot that suits you, and we'll
           confirm by email.

@@ -109,13 +109,13 @@ const faqs = [
 function Index() {
   return (
     <div>
-      <section className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:py-24">
+      <section className="relative overflow-hidden mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:py-28">
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
           <div className="min-w-0 animate-in fade-in slide-in-from-bottom-4 duration-700">
             <span className="inline-flex items-center gap-2 rounded-full bg-secondary px-3 py-1 text-xs font-semibold tracking-wide text-secondary-foreground uppercase">
               <Leaf className="size-3.5" /> Wellness, unhurried
             </span>
-            <h1 className="mt-5 text-4xl leading-tight font-semibold text-balance sm:text-5xl lg:text-6xl">
+            <h1 className="mt-5 text-4xl font-semibold tracking-tight leading-[1.05] text-balance sm:text-5xl lg:text-6xl">
               Care that gives you room to breathe
             </h1>
             <p className="mt-4 max-w-prose text-base text-muted-foreground sm:text-lg">
@@ -123,38 +123,61 @@ function Index() {
               in a quiet, welcoming space. Pick a time that suits you — we handle the rest.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button asChild size="lg" className="w-full rounded-xl shadow-[var(--shadow-soft)] hover-lift sm:w-auto">
+              <Button asChild size="lg" className="w-full rounded-xl shadow-[var(--shadow-soft)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[var(--shadow-lift)] sm:w-auto">
                 <Link to="/book">
                   <CalendarCheck className="size-5" /> Book an appointment
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="w-full rounded-xl sm:w-auto">
+              <Button asChild size="lg" variant="outline" className="w-full rounded-xl border-border/70 sm:w-auto">
                 <a href="#services">Explore services</a>
               </Button>
             </div>
+
+            <div className="mt-10 grid grid-cols-3 gap-4 border-t border-border/60 pt-6 sm:gap-6">
+  <div>
+    <p className="text-3xl font-semibold text-primary">10+</p>
+    <p className="mt-1 text-sm text-muted-foreground">
+      Years Experience
+    </p>
+  </div>
+
+  <div>
+    <p className="text-3xl font-semibold text-primary">800+</p>
+    <p className="mt-1 text-sm text-muted-foreground">
+      Happy Clients
+    </p>
+  </div>
+
+  <div>
+    <p className="text-3xl font-semibold text-primary">100%</p>
+    <p className="mt-1 text-sm text-muted-foreground">
+      Personal Care
+    </p>
+  </div>
+</div>
           </div>
 
-          <div className="min-w-0 overflow-hidden rounded-3xl shadow-[var(--shadow-lift)] animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150 fill-mode-both">
+          <div className="group min-w-0 overflow-hidden rounded-[32px] shadow-[var(--shadow-lift)] animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150 fill-mode-both">
             <img
               src={heroImage}
               alt="Sunlit sage-green treatment room at Willow & Stone Studio"
               width={1600}
               height={1100}
-              className="h-56 w-full object-cover sm:h-80 lg:h-[26rem]"
+              className="h-56 w-full object-cover transition-transform duration-700 group-hover:scale-105 sm:h-80 lg:h-[30rem]"
             />
           </div>
         </div>
       </section>
 
       <section id="services" className="border-y border-border/70 bg-secondary/40">
-        <div className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
+        <div className="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6 lg:py-28">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div className="max-w-2xl">
               <h2 className="text-3xl font-semibold sm:text-4xl">What we offer</h2>
-              <p className="mt-3 text-muted-foreground">
-                Three simple ways to work together, each with a practitioner who knows your
-                history.
-              </p>
+             <p className="mt-4 max-w-xl text-muted-foreground">
+  Every appointment is tailored to your needs, whether you're visiting for
+  the first time or continuing your wellness journey.
+</p>
             </div>
             <Link
               to="/services"
@@ -166,14 +189,14 @@ function Index() {
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {services.map((service) => (
               <Card
-                key={service.title}
-                className="rounded-2xl border-border/70 shadow-[var(--shadow-soft)] hover-lift"
-              >
-                <CardContent className="p-6">
-                  <span className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary">
-                    <service.icon className="size-5" />
+  key={service.title}
+  className="group rounded-3xl border-border/70 bg-gradient-to-br from-background to-secondary/30 shadow-[var(--shadow-soft)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[var(--shadow-lift)]"
+>
+                <CardContent className="p-8">
+                  <span className="grid size-12 place-items-center rounded-xl bg-primary/10 text-primary transition-transform duration-500 group-hover:rotate-6">
+                    <service.icon className="size-5 transition-transform duration-500 group-hover:scale-110" />
                   </span>
-                  <h3 className="mt-4 text-xl font-semibold">{service.title}</h3>
+                  <h3 className="mt-5 text-xl font-semibold tracking-tight">{service.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                     {service.body}
                   </p>
@@ -184,40 +207,68 @@ function Index() {
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
+      <section className="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6 lg:py-28">
         <div className="max-w-2xl">
-          <h2 className="text-3xl font-semibold sm:text-4xl">Why clients come back</h2>
-        </div>
+  <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+    Why clients come back
+  </h2>
+
+  <p className="mt-4 text-muted-foreground">
+    Every visit is designed to feel calm, personal, and thoughtfully paced,
+    giving you the confidence to return whenever you need.
+  </p>
+</div>
         <div className="mt-10 grid gap-6 sm:grid-cols-3">
           {whyUs.map((item) => (
-            <div key={item.title}>
-              <span className="grid size-11 place-items-center rounded-xl bg-primary/10 text-primary">
-                <item.icon className="size-5" />
+            <Card
+  key={item.title}
+  className="group rounded-3xl border-border/70 bg-gradient-to-br from-background to-secondary/30 shadow-[var(--shadow-soft)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[var(--shadow-lift)]"
+>
+  <CardContent className="p-8">
+              <span className="grid size-12 place-items-center rounded-xl bg-primary/10 text-primary transition-transform duration-500 group-hover:rotate-6">
+                <item.icon className="size-5 transition-transform duration-500 group-hover:scale-110" />
               </span>
-              <h3 className="mt-4 text-lg font-semibold">{item.title}</h3>
+              <h3 className="mt-5 text-xl font-semibold tracking-tight">{item.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.body}</p>
-            </div>
+              </CardContent>
+            </Card>
           ))}
         </div>
       </section>
 
       <section className="border-y border-border/70 bg-secondary/40">
-        <div className="mx-auto w-full max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-          <div className="max-w-2xl">
-            <h2 className="text-3xl font-semibold sm:text-4xl">What clients say</h2>
-          </div>
+        <div className="mx-auto w-full max-w-6xl px-4 py-20 sm:px-6 lg:py-28">
+         <div className="max-w-2xl">
+  <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+    What clients say
+  </h2>
+
+  <p className="mt-4 text-muted-foreground">
+    Thoughtful care creates lasting relationships. Here's what our clients
+    appreciate most about their experience.
+  </p>
+</div>
           <div className="mt-10 grid gap-6 sm:grid-cols-3">
             {testimonials.map((t) => (
-              <Card key={t.name} className="rounded-2xl border-border/70 shadow-[var(--shadow-soft)] hover-lift">
-                <CardContent className="p-6">
-                  <p className="text-sm leading-relaxed text-muted-foreground">"{t.quote}"</p>
+          <Card
+  key={t.name}
+  className="group rounded-3xl border-border/70 bg-gradient-to-br from-background to-secondary/30 shadow-[var(--shadow-soft)] transition-all duration-500 hover:-translate-y-2 hover:shadow-[var(--shadow-lift)]"
+>
+                <CardContent className="p-8">
+                  <span className="text-5xl font-serif leading-none text-primary/20">
+  “
+</span>
+                  
+                 <p className="text-base leading-7 text-muted-foreground italic">
+  "{t.quote}"
+</p>
                   <div className="mt-5 flex items-center gap-3">
-                    <Avatar className="size-9">
+                    <Avatar className="size-10 transition-transform duration-500 group-hover:scale-110">
                       <AvatarFallback className="bg-primary/10 text-xs font-semibold text-primary">
                         {t.initials}
                       </AvatarFallback>
                     </Avatar>
-                    <span className="text-sm font-medium">{t.name}</span>
+                    <span className="text-base font-semibold tracking-tight">{t.name}</span>
                   </div>
                 </CardContent>
               </Card>

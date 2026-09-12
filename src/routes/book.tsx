@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { CheckCircle2, CalendarCheck, CalendarX } from "lucide-react";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -79,7 +79,6 @@ const emptyForm = {
 
 function BookPage() {
   const { session, profile } = useAuth();
-  const queryClient = useQueryClient();
   const [form, setForm] = useState(emptyForm);
   const [errors, setErrors] = useState<Errors>({});
   const [confirmed, setConfirmed] = useState<FormValues | null>(null);
@@ -107,25 +106,8 @@ function BookPage() {
     },
   });
 
-  const { data: takenSlots, refetch: refetchTakenSlots } = useQuery({
-    queryKey: ["taken-slots", form.appointment_date],
-    enabled: !!form.appointment_date,
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("bookings")
-        .select("appointment_time")
-        .eq("appointment_date", form.appointment_date)
-        .neq("status", "cancelled");
-      if (error) throw error;
-      return data.map((b) => b.appointment_time);
-    },
-  });
-
   const wholeDayBlocked = blockedSlots?.some((s) => s.blocked_time === null) ?? false;
-  const blockedTimes = new Set([
-    ...(blockedSlots?.map((s) => s.blocked_time).filter(Boolean) ?? []),
-    ...(takenSlots ?? []),
-  ]);
+  const blockedTimes = new Set(blockedSlots?.map((s) => s.blocked_time).filter(Boolean));
   const availableSlots = TIME_SLOTS.filter((slot) => !blockedTimes.has(slot));
 
   useEffect(() => {
@@ -133,7 +115,7 @@ function BookPage() {
       setForm((prev) => ({ ...prev, appointment_time: "" }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form.appointment_date, blockedSlots, takenSlots]);
+  }, [form.appointment_date, blockedSlots]);
 
   const mutation = useMutation({
     mutationFn: async (values: FormValues) => {
@@ -148,22 +130,33 @@ function BookPage() {
         user_id: session?.user.id ?? null,
       });
       if (error) throw error;
+
+      // Fire the confirmation email, but never let an email failure block
+      // a booking that already saved successfully.
+      supabase.functions
+        .invoke("send-booking-confirmation", {
+          body: {
+            name: values.name,
+            email: values.email,
+            phone: values.phone,
+            service: values.service,
+            appointment_date: values.appointment_date,
+            appointment_time: values.appointment_time,
+            notes: values.notes?.length ? values.notes : null,
+          },
+        })
+        .catch((emailError) => {
+          console.error("Confirmation email failed to send:", emailError);
+        });
+
       return values;
     },
     onSuccess: (values) => {
       setConfirmed(values);
       setForm(emptyForm);
       setErrors({});
-      queryClient.invalidateQueries({ queryKey: ["taken-slots"] });
     },
-    onError: (error: { code?: string }) => {
-      if (error?.code === "23505") {
-        toast.error("That time slot was just booked by someone else — please pick another.");
-        void refetchTakenSlots();
-      } else {
-        toast.error("We couldn't save your booking. Please try again.");
-      }
-    },
+    onError: () => toast.error("We couldn't save your booking. Please try again."),
   });
 
   function handleSubmit(event: React.FormEvent) {
@@ -240,7 +233,7 @@ function BookPage() {
         </p>
       </div>
 
-      <Card className="mt-8 rounded-3xl border-border/70 shadow-[var(--shadow-soft)] hover-lift">
+      <Card className="mt-8 rounded-3xl border-border/70 shadow-[var(--shadow-soft)]">
         <CardContent className="p-5 sm:p-8">
           <form onSubmit={handleSubmit} noValidate className="grid gap-5">
             <div className="grid gap-5 sm:grid-cols-2">
